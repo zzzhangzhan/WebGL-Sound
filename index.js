@@ -22,7 +22,7 @@ let currentFFTsize = document.getElementById('numFFT');
 
 let audioLoader, sound, data;
 let time = 0;
-let fftSize = 32;
+let fftSize;
 const clock = new THREE.Clock();
 
 const startButton = document.getElementById('startButton');
@@ -175,7 +175,7 @@ function setupGui() {
 
     material: 'shiny',
 
-    speed: 1.0,
+    speed: 0.75,
     numBlobs: 16,
     resolution: 60,
     isolation: 60,
@@ -252,13 +252,14 @@ function audioAnalyze() {
 
   // get the average frequency of the sound
   // data = analyser.getAverageFrequency();
-  analyser.fftSize = effectController.numBlobs * 8;
+  //console.log(effectController.numBlobs);
+  analyser.fftSize = effectController.numBlobs * 2;
   currentFFTsize.innerHTML = "current fft size: " + analyser.fftSize;
-
+  //console.log(analyser);
   // get the  frequency of the sound
   data = analyser.getFrequencyData();
   //uniforms.tAudioData.value.needsUpdate = true;
-
+  console.log(data.length);
 }
 
 function updateCubes(object, time, numblobs, floor, wallx, wallz) {
@@ -291,8 +292,8 @@ function updateCubes(object, time, numblobs, floor, wallx, wallz) {
     //
     // } else {
 
-    object.addBall(ballx, bally, ballz, strength, subtract / (data[i] / 40));
-
+    object.addBall(ballx, bally, ballz, strength, subtract * 20 * (data[i] / 255));
+    //console.log(data[i]);
     // }
 
   }
